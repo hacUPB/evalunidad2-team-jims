@@ -32,13 +32,20 @@ void AddEvent(EventList *this, Event *event)
     if(this->head==NULL)
     {
         this->head=event;
-        this->last=event;
+        this->head->next=this->last;
         this->isEmpty=0;
         return 0;
     }
-
-    this->last->next=event;
-    this->last=event;
+    else if(this->head!=NULL && this->last==NULL )
+    {
+        this->last=event;
+        this->head->next=event;
+    }
+    else
+    {
+        this->last->next=event;
+        this->last=event;
+    }
 }
 
 void RemoveEvent(EventList *this, char *name)
