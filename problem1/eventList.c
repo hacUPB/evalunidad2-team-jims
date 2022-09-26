@@ -15,13 +15,14 @@ EventList *CreateEventList(void)
 Event *SearchEvent(EventList *this, char *name)
 {
     Event *loQueBusca;
-    int numeroEventos=0;
-    Event *primero=this->head;
     loQueBusca=this->head;
+    if(strcmp(loQueBusca->eventName,name)==0)
+    {
+        return loQueBusca;
+    }
     while (loQueBusca->next->eventName!=name)
     {     
         loQueBusca=loQueBusca->next;
-        //numeroEventos=numeroEventos+1;
     }
     return loQueBusca;
 }
@@ -56,7 +57,7 @@ void RemoveEvent(EventList *this, char *name)
     }   
     aRemover=SearchEvent(this,name);
     antesRemover->next=aRemover->next;
-    aRemover=NULL;
+    DestroyEvent(aRemover);
     this->last=antesRemover;
 }
 
@@ -66,13 +67,17 @@ void ListEvents(EventList *this)
     {
         printf("empty\n");
     }
-    Event *actual;
-    actual=this->head;
-    while (actual!=NULL)
+    else
     {
-        printf("%p - %s\n",actual,actual->eventName);
-        actual=actual->next;
-    }  
+        Event *actual;
+        actual=this->head;
+        while (actual!=NULL)
+        {
+            printf("%p - %s\n",actual,actual->eventName);
+            actual=actual->next;
+        } 
+    }
+    
 }
 void DestroyEventList(EventList *this)
 {
@@ -81,15 +86,15 @@ void DestroyEventList(EventList *this)
     while (this->head->next!=NULL)
     {
         antesRemover=this->head;
-        while (antesRemover->next->eventName!=this->last->eventName)
+        while (strcmp(antesRemover->next->eventName,this->last->eventName)==0 )
         {
             antesRemover=antesRemover->next;
         }   
         aRemover=this->last;
         antesRemover->next=aRemover->next;
-        aRemover=NULL;
+        DestroyEvent(aRemover);
         this->last=antesRemover;
     }  
-    this->head==NULL;  
+    DestroyEvent(this->head); 
     free(this);
 }

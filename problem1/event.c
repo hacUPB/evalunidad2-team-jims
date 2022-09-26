@@ -4,10 +4,11 @@
 
 Event *CreateEvent(char *name)
 {
-    char nombre=name;
     Event *evento=malloc(sizeof(Event));
-    evento->eventName[0]=nombre;
+    name[15]=0;
+    strncpy(evento->eventName,name,strlen(name) +1);
     evento->next=NULL;
+    return evento;
 }
 
 void DestroyEvent(Event *this)
