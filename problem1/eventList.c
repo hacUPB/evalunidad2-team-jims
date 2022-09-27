@@ -15,15 +15,15 @@ EventList *CreateEventList(void)
 Event *SearchEvent(EventList *this, char *name)
 {
     Event *loQueBusca=this->head;  
-    if(this->isEmpty==0)
+    if(this->isEmpty==0)  //corregir esto es vacio 1
     {
-        if(strcmp(loQueBusca->eventName,name)==0)
+        if(strcmp(loQueBusca->eventName,name)==0) // loquebusca=loquebusca->next (creo)
         {
             return loQueBusca;
         }
-        while (strcmp(loQueBusca->eventName,name)!=0)
+        while (strcmp(loQueBusca->eventName,name)!=0) //no es necesaria
         {     
-            loQueBusca=loQueBusca->next;
+            loQueBusca=loQueBusca->next; //no es necesaria
         }
         return loQueBusca;
     }
