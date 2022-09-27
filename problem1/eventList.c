@@ -14,37 +14,46 @@ EventList *CreateEventList(void)
 
 Event *SearchEvent(EventList *this, char *name)
 {
-    Event *loQueBusca;
-    loQueBusca=this->head;
-    if(strcmp(loQueBusca->eventName,name)==0)
+    Event *loQueBusca=NULL;  
+    if(this->isEmpty==0)
     {
+        loQueBusca=this->head;
+        if(strcmp(loQueBusca->eventName,name)==1)
+        {
+            return loQueBusca;
+        }
+        while (strcmp(loQueBusca->next->eventName,name)==0)
+        {     
+            loQueBusca=loQueBusca->next;
+        }
         return loQueBusca;
     }
-    while (loQueBusca->next->eventName!=name)
-    {     
-        loQueBusca=loQueBusca->next;
-    }
+    else
     return loQueBusca;
+    
 }
 
 void AddEvent(EventList *this, Event *event)
 {
-    if(this->head==NULL)
+    if(this->isEmpty==1)
     {
         this->head=event;
-        this->head->next=this->last;
+        this->last=event;
+        //this->head->next=this->last;
         this->isEmpty=0;
         return 0;
     }
-    else if(this->head!=NULL && this->last==NULL )
+    else if(this->isEmpty==0)
     {
         this->last=event;
         this->head->next=event;
+        return 0;
     }
     else
     {
         this->last->next=event;
         this->last=event;
+        return 0;
     }
 }
 
@@ -70,7 +79,7 @@ void RemoveEvent(EventList *this, char *name)
 
 void ListEvents(EventList *this)
 {
-    if(this->head=NULL)
+    if(this->isEmpty==1)
     {
         printf("empty\n");
     }
@@ -80,7 +89,7 @@ void ListEvents(EventList *this)
         actual=this->head;
         while (actual!=NULL)
         {
-            printf("%p - %s\n",actual,actual->eventName);
+            printf("%s\n",actual->eventName);
             actual=actual->next;
         } 
     }
