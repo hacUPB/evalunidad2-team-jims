@@ -6,24 +6,24 @@
 EventList *CreateEventList(void)
 {
     EventList *event=malloc(sizeof(EventList));
-    event->head==NULL;
-    event->last==NULL;
-    event->isEmpty=0;
+    event->head=NULL;
+    event->last=NULL;
+    event->isEmpty=1;
     return event;
 }
 
 Event *SearchEvent(EventList *this, char *name)
 {
     Event *loQueBusca=this->head;  
-    if(this->isEmpty==1)  //corregir esto es vacio 1
+    if(this->isEmpty==0)  
     {
-        /*if(strcmp(loQueBusca->eventName,name)==0) // loquebusca=loquebusca->next (creo)
+        if(strcmp(loQueBusca->eventName,name)==0) 
         {
             return loQueBusca;
-        }*/
-        while (strcmp(loQueBusca->eventName,name)!=0) //no es necesaria
+        }
+        while (strcmp(loQueBusca->eventName,name)!=0)
         {     
-            loQueBusca=loQueBusca->next; //no es necesaria
+            loQueBusca=loQueBusca->next; 
         }
         return loQueBusca;
     }
@@ -34,14 +34,14 @@ Event *SearchEvent(EventList *this, char *name)
 
 void AddEvent(EventList *this, Event *event)
 {
-    if(this->isEmpty==0)
+    if(this->isEmpty==1)
     {
         this->head=event;
         //this->last=event;
         //this->head->next=this->last;
-        this->isEmpty=1;
+        this->isEmpty=0;
     }
-    else if(this->isEmpty==1 && this->last==NULL)
+    else if(this->isEmpty==0 && this->last==NULL)
     {
         this->last=event;
         this->head->next=event;
@@ -55,29 +55,71 @@ void AddEvent(EventList *this, Event *event)
 }
 
 void RemoveEvent(EventList *this, char *name)
-{
+{  
+    /*Caso remove inicio fila
+    if (this->isEmpty == 0)
+    {
+        return -1;
+    }
     Event *antesRemover;
     Event *aRemover;
     antesRemover=this->head;
-    if(this->isEmpty==0)
+    this->head = this->head->next;
+    if (this->isEmpty == 1)
     {
-        return ;
+        this->last = NULL;
     }
-    while (strcmp(antesRemover->next->eventName,name)!=0)
+    free (antesRemover->eventName);
+    free (antesRemover);
+    this->isEmpty--;
+    return 0;*/
+    
+    Event *antesRemover;
+    Event *aRemover;
+    antesRemover=this->head;
+    if(this->isEmpty==1)
     {
-        antesRemover=antesRemover->next;
-    }  
-    aRemover=antesRemover->next;
-    //aRemover=SearchEvent(this,name);
-    antesRemover->next=aRemover->next;
-    DestroyEvent(aRemover);
-    //this->last=antesRemover; 
-
+        this->head=NULL;
+        this->last=NULL;
+    }
+    else if(strcmp(antesRemover->eventName,name)==1)
+    {
+        aRemover=this->head;
+        this->head=aRemover->next;
+        DestroyEvent(aRemover);
+        if(this->head==NULL && this->last==NULL)
+        {
+            this->isEmpty=0;
+        }
+    }
+    else
+    {
+        while (strcmp(antesRemover->next->eventName,name)!=0)
+        {
+            antesRemover=antesRemover->next;
+        }   
+        aRemover=antesRemover->next;
+        if(aRemover==this->head)
+        {
+            this->head=aRemover->next;
+        }
+        if(aRemover==this->last)
+        {
+            this->last=antesRemover;
+        }
+        antesRemover->next=aRemover->next;
+        DestroyEvent(aRemover);
+        if(this->head==NULL && this->last==NULL)
+        {
+            this->isEmpty=1;
+        }
+    }
+    
 }
 
 void ListEvents(EventList *this)
 {
-    if(this->isEmpty==0)
+    if(this->head==NULL)
     {
         printf("empty\n");
     }
@@ -95,20 +137,14 @@ void ListEvents(EventList *this)
 }
 void DestroyEventList(EventList *this)
 {
-    Event *antesRemover;
+    Event *siguienteRemover;
     Event *aRemover;
-    while (this->head->next!=NULL)
+    aRemover=this->head;
+    while (aRemover==NULL)
     {
-        antesRemover=this->head;
-        while (strcmp(antesRemover->next->eventName,this->last->eventName)==0 )
-        {
-            antesRemover=antesRemover->next;
-        }   
-        aRemover=this->last;
-        antesRemover->next=aRemover->next;
+        siguienteRemover=aRemover->next;
         DestroyEvent(aRemover);
-        this->last=antesRemover;
-    }  
-    DestroyEvent(this->head); 
+        aRemover=siguienteRemover;
+    }
     free(this);
 }
