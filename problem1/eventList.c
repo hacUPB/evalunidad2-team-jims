@@ -17,22 +17,15 @@ Event *SearchEvent(EventList *this, char *name)
     Event *loQueBusca=this->head;  
     if(this->isEmpty==0)  
     {
-        if(strcmp(loQueBusca->eventName,name)==0) 
+        while(loQueBusca!=NULL)
         {
-            return loQueBusca;
-        }
-        while (strcmp(loQueBusca->next->eventName,name)!=0)
-        {   
-            loQueBusca=loQueBusca->next;
-            if(loQueBusca==NULL)
+            if(strcmp(loQueBusca->eventName,name)==0)
             {
-                return NULL;
+                return loQueBusca;
             }
-             
+            loQueBusca = loQueBusca->next;
         }
-        return loQueBusca;
     }
-    else
     return NULL;
     
 }
