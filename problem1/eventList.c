@@ -32,7 +32,13 @@ Event *SearchEvent(EventList *this, char *name)
 
 void AddEvent(EventList *this, Event *event)
 {
-    if(this->isEmpty==1)
+   
+   Event *eso=SearchEvent(this,event->eventName);
+    if(eso!=NULL)
+    {
+        
+    }
+    else if(this->isEmpty==1)
     {
         this->head=event;
         //this->last=event;
@@ -71,7 +77,7 @@ void RemoveEvent(EventList *this, char *name)
     free (antesRemover->eventName);
     free (antesRemover);
     this->isEmpty--;
-    return 0;*/
+    return 0;x*/
     
     Event *antesRemover;
     Event *aRemover;
@@ -153,3 +159,4 @@ void DestroyEventList(EventList *this)
     }
     free(this);
 }
+
