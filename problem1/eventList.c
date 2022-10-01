@@ -21,14 +21,19 @@ Event *SearchEvent(EventList *this, char *name)
         {
             return loQueBusca;
         }
-        while (strcmp(loQueBusca->eventName,name)!=0)
-        {     
-            loQueBusca=loQueBusca->next; 
+        while (strcmp(loQueBusca->next->eventName,name)!=0)
+        {   
+            loQueBusca=loQueBusca->next;
+            if(loQueBusca==NULL)
+            {
+                return NULL;
+            }
+             
         }
         return loQueBusca;
     }
     else
-    return loQueBusca;
+    return NULL;
     
 }
 
@@ -52,6 +57,7 @@ void AddEvent(EventList *this, Event *event)
         this->last->next=event;
         this->last=event;
     }
+
 }
 
 void RemoveEvent(EventList *this, char *name)
@@ -82,15 +88,21 @@ void RemoveEvent(EventList *this, char *name)
         this->head=NULL;
         this->last=NULL;
     }
-    else if(strcmp(antesRemover->eventName,name)==1)
+    else if(strcmp(antesRemover->eventName,name)==0)
     {
         aRemover=this->head;
         this->head=aRemover->next;
+        if(this->head==NULL)
+        {
+            this->last=NULL;
+            this->isEmpty=1;
+
+        }
         DestroyEvent(aRemover);
-        if(this->head==NULL && this->last==NULL)
+        /*if(this->head==NULL && this->last==NULL)
         {
             this->isEmpty=0;
-        }
+        }*/
     }
     else
     {
@@ -140,7 +152,7 @@ void DestroyEventList(EventList *this)
     Event *siguienteRemover;
     Event *aRemover;
     aRemover=this->head;
-    while (aRemover==NULL)
+    while (aRemover!=NULL)
     {
         siguienteRemover=aRemover->next;
         DestroyEvent(aRemover);
