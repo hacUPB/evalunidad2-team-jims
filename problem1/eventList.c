@@ -82,7 +82,12 @@ void RemoveEvent(EventList *this, char *name)
     Event *antesRemover;
     Event *aRemover;
     antesRemover=this->head;
-    if(this->isEmpty==1)
+    Event *eso=SearchEvent(this,name);
+    if(eso==NULL)
+    {
+        
+    }
+    else if(this->isEmpty==1)
     {
         this->head=NULL;
         this->last=NULL;
